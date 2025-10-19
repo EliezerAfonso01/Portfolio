@@ -1,400 +1,251 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfólio</title>
+    <title>Eliézer Afonso - Desenvolvedor .NET</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        // Smooth scrolling for navigation links
+        document.addEventListener('DOMContentLoaded', function () {
+            // Add scroll effect to navbar
+            const navbar = document.querySelector('.navbar');
+            window.addEventListener('scroll', function () {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+
+            // Add fade-in animation on scroll
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver(function (entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, observerOptions);
+
+            // Observe all sections for fade-in effect
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.add('fade-in');
+                observer.observe(section);
+            });
+
+            // Add typing effect to hero subtitle
+            const subtitle = document.querySelector('.hero-subtitle');
+            if (subtitle) {
+                const text = subtitle.textContent;
+                subtitle.textContent = '';
+                subtitle.style.borderRight = '2px solid white';
+                let i = 0;
+                const typeWriter = () => {
+                    if (i < text.length) {
+                        subtitle.textContent += text.charAt(i);
+                        i++;
+                        setTimeout(typeWriter, 100);
+                    } else {
+                        setTimeout(() => {
+                            subtitle.style.borderRight = 'none';
+                        }, 1000);
+                    }
+                };
+                setTimeout(typeWriter, 1000);
+            }
+
+            // Add hover effects to project cards
+            document.querySelectorAll('.project-card').forEach(card => {
+                card.addEventListener('mouseenter', function () {
+                    this.style.transform = 'translateY(-10px) scale(1.02)';
+                });
+                card.addEventListener('mouseleave', function () {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+
+            // Add click effects to buttons
+            document.querySelectorAll('.btn-primary, .btn-secondary').forEach(btn => {
+                btn.addEventListener('click', function (e) {
+                    // Create ripple effect
+                    const ripple = document.createElement('span');
+                    const rect = this.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    const x = e.clientX - rect.left - size / 2;
+                    const y = e.clientY - rect.top - size / 2;
+
+                    ripple.style.width = ripple.style.height = size + 'px';
+                    ripple.style.left = x + 'px';
+                    ripple.style.top = y + 'px';
+                    ripple.classList.add('ripple');
+
+                    this.appendChild(ripple);
+
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                });
+            });
+        });
+    </script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --primary: #4F46E5;
-            --secondary: #7C3AED;
-            --accent: #F472B6;
-            --dark: #1F2937;
-            --light: #F3F4F6;
-        }
-
-        @keyframes gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-            100% { transform: translateY(0px); }
-        }
-
-        @keyframes slideInLeft {
-            from { transform: translateX(-100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        body {
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            line-height: 1.6;
-            color: var(--dark);
-            background-color: var(--light);
-            overflow-x: hidden;
-        }
-
-        /* Header Animado */
-        header {
-            min-height: 100vh;
-            background: linear-gradient(-45deg, #4F46E5, #7C3AED, #F472B6, #2563EB);
-            background-size: 400% 400%;
-            animation: gradient 15s ease infinite;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .header-content {
-            text-align: center;
-            color: white;
-            z-index: 1;
-            animation: float 6s ease-in-out infinite;
-        }
-
-        .profile-img {
-            width: 180px;
-            height: 180px;
+        .ripple {
+            position: absolute;
             border-radius: 50%;
-            border: 4px solid rgba(255, 255, 255, 0.3);
-            margin-bottom: 20px;
-            transition: transform 0.3s ease;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        }
-
-        .profile-img:hover {
-            transform: scale(1.1) rotate(5deg);
-        }
-
-        h1 {
-            font-size: 3.5rem;
-            margin-bottom: 15px;
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
-        }
-
-        .typed-text {
-            font-size: 1.5rem;
-            color: rgba(255, 255, 255, 0.9);
-            border-right: 3px solid white;
-            padding-right: 5px;
-            animation: typing 3.5s steps(30, end), blink .75s step-end infinite;
-            white-space: nowrap;
-            overflow: hidden;
-        }
-
-        /* Seções */
-        section {
-            padding: 100px 0;
-            position: relative;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* Cards de Habilidades */
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            margin-top: 50px;
-        }
-
-        .skill-card {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .skill-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-        }
-
-        .skill-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-        }
-
-        .skill-card h3 {
-            color: var(--primary);
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-        }
-
-        .skill-list {
-            list-style: none;
-        }
-
-        .skill-list li {
-            margin: 15px 0;
-            padding-left: 25px;
-            position: relative;
-        }
-
-        .skill-list li::before {
-            content: '→';
-            position: absolute;
-            left: 0;
-            color: var(--accent);
-        }
-
-        /* Projetos */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 40px;
-            margin-top: 50px;
-        }
-
-        .project-card {
-            background: white;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .project-card:hover {
-            transform: translateY(-10px) scale(1.02);
-        }
-
-        .project-img {
-            width: 100%;
-            height: 250px;
-            object-fit: contain;
-            transition: all 0.3s ease;
-        }
-
-        .project-card:hover .project-img {
-            transform: scale(1.1);
-        }
-
-        .project-info {
-            padding: 30px;
-            background: white;
-            position: relative;
-        }
-
-        .project-info h3 {
-            font-size: 1.8rem;
-            margin-bottom: 15px;
-            color: var(--primary);
-        }
-
-        .project-link {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 12px 25px;
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
-            color: white;
-            text-decoration: none;
-            border-radius: 25px;
-            transition: all 0.3s ease;
-        }
-
-        .project-link:hover {
-            transform: translateX(10px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Contato */
-        .contact {
-            background: var(--dark);
-            color: white;
-            position: relative;
-        }
-
-        .contact::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, rgba(79, 70, 229, 0.2), rgba(244, 114, 182, 0.2));
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(0);
+            animation: ripple-animation 0.6s linear;
             pointer-events: none;
         }
 
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-top: 50px;
-        }
-
-        .social-btn {
-            padding: 15px 40px;
-            border: 2px solid white;
-            border-radius: 30px;
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .social-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 0;
-            height: 100%;
-            background: white;
-            transition: all 0.3s ease;
-            z-index: -1;
-        }
-
-        .social-btn:hover {
-            color: var(--dark);
-        }
-
-        .social-btn:hover::before {
-            width: 100%;
-        }
-
-        /* Títulos de Seção */
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 60px;
-            color: var(--primary);
-            position: relative;
-        }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            border-radius: 2px;
-        }
-
-        /* Responsividade */
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2.5rem;
+        @keyframes ripple-animation {
+            to {
+                transform: scale(4);
+                opacity: 0;
             }
-
-            .section-title {
-                font-size: 2rem;
-            }
-
-            .social-links {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .social-btn {
-                width: 80%;
-                text-align: center;
-            }
-
-            .project-card {
-                margin: 0 20px;
-            }
-        }
-
-        /* Footer */
-        footer {
-            background: var(--dark);
-            color: white;
-            text-align: center;
-            padding: 20px 0;
         }
     </style>
 </head>
-<body>
-    <!-- Header -->
-    <header>
-        <div class="header-content">
-            <img src="Foto.jpg" alt="Seu Avatar" class="profile-img">
-            <h1>Eliézer Afonso</h1>
-            <p class="typed-text">Engenheiro de Software</p>
-        </div>
-    </header>
 
-    <!-- Sobre -->
-    <section>
-        <div class="container">
-            <h2 class="section-title">Sobre Mim</h2>
-            <p style="text-align: center; font-size: 1.2rem; max-width: 800px; margin: 0 auto;">
-                Sou um Engenheiro de Software Fullstack apaixonado por desenvolver soluções inovadoras e eficientes. Com mais de 6 anos de experiência, meu foco está em C#, .NET Core, Blazor, APIs REST e microserviços, sempre aplicando boas práticas como Clean Code e Arquitetura Limpa. Busco constantemente aprimorar minhas habilidades e criar aplicações robustas, escaláveis e seguras.
-            </p>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">Eliézer Afonso</div>
+            <ul class="nav-links">
+                <li><a href="#about">Sobre</a></li>
+                <li><a href="#projects">Projetos</a></li>
+                <li><a href="#experience">Experiência</a></li>
+                <li><a href="#contact">Contato</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1>Eliézer Afonso</h1>
+                <p class="hero-subtitle">Desenvolvedor .NET Pleno | Full Stack C# Developer</p>
+                <p class="hero-description">
+                    Sou desenvolvedor .NET com mais de 6 anos de experiência no ecossistema Microsoft,
+                    criando soluções completas e escaláveis com C#, ASP.NET Core, Angular e MAUI.
+                    Tenho paixão por construir produtos de ponta a ponta — do conceito ao deploy —
+                    com foco em qualidade, performance e experiência do usuário.
+                </p>
+                <div class="hero-buttons">
+                    <a href="#projects" class="btn-primary">Ver Projetos</a>
+                    <a href="#contact" class="btn-secondary">Contato</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="Foto.jpg" alt="Eliézer Afonso" class="profile-img">
+            </div>
         </div>
     </section>
 
-    <!-- Habilidades -->
-    <section style="background-color: #ffffff;">
+    <!-- About Section -->
+    <section id="about" class="section about">
         <div class="container">
-            <h2 class="section-title">Habilidades</h2>
+            <h2 class="section-title">Sobre Mim</h2>
+            <div class="about-content">
+                <p class="about-text">
+                    Sou movido por desafios e pela busca constante por evolução. Acredito que boas soluções
+                    nascem da colaboração e da combinação entre qualidade técnica e propósito.
+                </p>
+                <p class="about-text">
+                    Com mais de 6 anos de experiência no ecossistema Microsoft, especializo-me em criar
+                    aplicações robustas e escaláveis que fazem a diferença na vida das pessoas e empresas.
+                </p>
+                <p class="about-text">
+                    Minha paixão está em transformar ideias complexas em soluções simples e eficientes,
+                    sempre priorizando código limpo, arquitetura bem estruturada e experiência do usuário excepcional.
+                </p>
+
+                <div class="tech-stack">
+                    <span class="tech-tag">C#</span>
+                    <span class="tech-tag">.NET</span>
+                    <span class="tech-tag">ASP.NET Core</span>
+                    <span class="tech-tag">Angular</span>
+                    <span class="tech-tag">MAUI</span>
+                    <span class="tech-tag">EF Core</span>
+                    <span class="tech-tag">Git</span>
+                    <span class="tech-tag">SQL Server</span>
+                </div>
+
+                <div class="values">
+                    <div class="value-item">
+                        <div class="value-icon"><i class="fas fa-code"></i></div>
+                        <div class="value-title">Código Limpo</div>
+                        <div class="value-desc">Sempre priorizo a qualidade e legibilidade do código</div>
+                    </div>
+                    <div class="value-item">
+                        <div class="value-icon"><i class="fas fa-users"></i></div>
+                        <div class="value-title">Colaboração</div>
+                        <div class="value-desc">Acredito no poder do trabalho em equipe</div>
+                    </div>
+                    <div class="value-item">
+                        <div class="value-icon"><i class="fas fa-rocket"></i></div>
+                        <div class="value-title">Evolução Contínua</div>
+                        <div class="value-desc">Sempre aprendendo e me atualizando</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Tech Stack</h2>
             <div class="skills-grid">
                 <div class="skill-card">
-                    <h3>Frontend</h3>
+                    <h3>Back-end</h3>
                     <ul class="skill-list">
-                        <li>Blazor</li>
-                        <li>ASP.NET</li>
-                        <li>Uno Platform</li>
-                        <li>WordPress</li>
-                        <li>JavaScript</li>
-                        <li>Angular</li>
+                        <li>C#</li>
+                        <li>.NET</li>
+                        <li>ASP.NET Core</li>
+                        <li>EF Core</li>
+                        <li>REST APIs</li>
+                        <li>Identity & Criptografia</li>
                     </ul>
                 </div>
                 <div class="skill-card">
-                    <h3>Backend</h3>
+                    <h3>Front-end</h3>
                     <ul class="skill-list">
-                        <li>C#</li>
-                        <li>.NET Core</li>
-                        <li>ASP.NET Core & APIs REST</li>
-                        <li>Identity & Criptografia</li>
+                        <li>Angular</li>
+                        <li>Blazor</li>
+                        <li>Uno Platform</li>
+                        <li>MAUI</li>
+                        <li>HTML, CSS, SCSS</li>
+                        <li>JavaScript</li>
+                    </ul>
+                </div>
+                <div class="skill-card">
+                    <h3>Banco de Dados</h3>
+                    <ul class="skill-list">
                         <li>SQL Server</li>
+                        <li>MySQL</li>
                         <li>SQLite</li>
                         <li>MariaDB</li>
                     </ul>
                 </div>
                 <div class="skill-card">
-                    <h3>Desktop & Mobile</h3>
-                    <ul class="skill-list">
-                        <li>.NET MAUI</li>
-                        <li>WinForms</li>
-                        <li>WPF</li>
-                        <li>Uno Platform</li>
-                    </ul>
-                </div>
-                <div class="skill-card">
-                    <h3>Ferramentas & Outros</h3>
+                    <h3>DevOps & Outros</h3>
                     <ul class="skill-list">
                         <li>Git & GitHub</li>
+                        <li>Azure DevOps</li>
                         <li>Clean Code</li>
                         <li>Arquitetura Limpa</li>
                     </ul>
@@ -403,54 +254,143 @@
         </div>
     </section>
 
-    <!-- Projetos -->
-    <section>
+    <!-- Projects Section -->
+    <section id="projects" class="section projects">
         <div class="container">
             <h2 class="section-title">Projetos</h2>
             <div class="projects-grid">
                 <div class="project-card">
-                    <img src="Pomto.png" alt="Projeto 1" class="project-img">
+                    <img src="Pomto.png" alt="Pomto - Aplicativo de Gestão Remota" class="project-img">
                     <div class="project-info">
-                        <h3>Pomto (Pombo Remoto)</h3>
-                        <p>Aplicação inovadora para profissionais remotos, permitindo monitoramento de tempo, rastreamento de atividades e análise de produtividade.</p>
-                        <a href="pomto_detail.html" class="project-link">Ver Projeto</a>
+                        <h3>Pomto</h3>
+                        <p class="project-description">
+                            Aplicativo autoral em produção que une gestão de trabalho remoto, saúde do colaborador
+                            e remuneração justa, equilibrando privacidade e segurança corporativa.
+                        </p>
+                        <div class="project-tech">
+                            <span class="project-tech-tag">.NET MAUI</span>
+                            <span class="project-tech-tag">ASP.NET Core</span>
+                            <span class="project-tech-tag">EF Core</span>
+                            <span class="project-tech-tag">SQLite</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="pomto_detail.html" class="project-link">Ver Aplicação</a>
+                            <a href="pomto_detail.html" class="project-link secondary">Mais Detalhes</a>
+                        </div>
                     </div>
                 </div>
                 <div class="project-card">
-                    <img src="DoceFinance.png" alt="Projeto 2" class="project-img">
+                    <img src="DoceFinance.png" alt="DoceFinance - Gestão Financeira" class="project-img">
                     <div class="project-info">
-                        <h3>DocesFinance (Doce Finanças)</h3>
-                        <p>Aplicação desenvolvida para facilitar a gestão financeira de pequenos empreendedores e autônomos, permitindo controle de receitas, despesas, fluxo de caixa e registro de vendas de forma intuitiva.</p>
-                        <a href="doce_finance_detail.html" class="project-link">Ver Projeto</a>
+                        <h3>DoceFinance</h3>
+                        <p class="project-description">
+                            App de gestão financeira e precificação para confeiteiras, com controle de receitas,
+                            despesas e cálculo automático de preços de venda.
+                        </p>
+                        <div class="project-tech">
+                            <span class="project-tech-tag">.NET MAUI</span>
+                            <span class="project-tech-tag">C#</span>
+                            <span class="project-tech-tag">SQLite</span>
+                            <span class="project-tech-tag">Community Toolkit</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="doce_finance_detail.html" class="project-link">Ver Aplicação</a>
+                            <a href="doce_finance_detail.html" class="project-link secondary">Mais Detalhes</a>
+                        </div>
                     </div>
                 </div>
                 <div class="project-card">
-                    <img src="LazyCopy.png" alt="Projeto 2" class="project-img">
+                    <img src="LazyCopy.png" alt="LazyCopy - Automação de Arquivos" class="project-img">
                     <div class="project-info">
-                        <h3>LazyCopy (Cópia Preguiçosa)</h3>
-                        <p>Ferramenta poderosa para automatizar cópias, renomeação e organização de arquivos e pastas, reduzindo tarefas repetitivas e aumentando a produtividade.</p>
-                        <a href="#" class="project-link">Indisponível</a>
+                        <h3>LazyCopy</h3>
+                        <p class="project-description">
+                            Ferramenta poderosa para automatizar cópias, renomeação e organização de arquivos e pastas,
+                            reduzindo tarefas repetitivas e aumentando a produtividade.
+                        </p>
+                        <div class="project-tech">
+                            <span class="project-tech-tag">C#</span>
+                            <span class="project-tech-tag">.NET Core</span>
+                            <span class="project-tech-tag">FileSystemWatcher</span>
+                            <span class="project-tech-tag">WinForms</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="project-link">Em Desenvolvimento</a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Contato -->
-    <section class="contact">
+    <!-- Experience Section -->
+    <section id="experience" class="section experience">
         <div class="container">
-            <h2 class="section-title" style="color: white;">Vamos Conversar?</h2>
-            <div class="social-links">
-                <a href="mailto:eliezeraafonso@outlook.com" class="social-btn">Email</a>
-                <a href="www.linkedin.com/in/eliezer-afonso-developer" class="social-btn">LinkedIn</a>
-                <a href="https://github.com/EliezerAfonso01" class="social-btn">GitHub</a>
+            <h2 class="section-title">Experiência</h2>
+            <div class="experience-timeline">
+                <div class="experience-item">
+                    <div class="experience-date">2022 - Atual</div>
+                    <div class="experience-content">
+                        <h3>Full Stack Developer (.NET & Angular)</h3>
+                        <div class="experience-company">Mardata, SL</div>
+                        <p class="experience-description">
+                            Desenvolvimento de soluções completas com foco em Angular e .NET,
+                            participação ativa em projetos de gestão documental e sistemas corporativos.
+                        </p>
+                    </div>
+                </div>
+                <div class="experience-item">
+                    <div class="experience-date">2020 - 2022</div>
+                    <div class="experience-content">
+                        <h3>Back-End Lead Developer</h3>
+                        <div class="experience-company">DealBusiness (SaaS)</div>
+                        <p class="experience-description">
+                            Liderança técnica em sistema B2B para venda e gestão de imóveis,
+                            implementação de autenticação 2FA e arquitetura de microserviços.
+                        </p>
+                    </div>
+                </div>
+                <div class="experience-item">
+                    <div class="experience-date">2018 - Atual</div>
+                    <div class="experience-content">
+                        <h3>Founder / Developer</h3>
+                        <div class="experience-company">Pomto - Projeto Autoral</div>
+                        <p class="experience-description">
+                            Desenvolvimento e manutenção de aplicativo próprio para gestão de trabalho remoto,
+                            desde o conceito até a produção, utilizando .NET MAUI e ASP.NET Core.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section contact">
+        <div class="container">
+            <div class="contact-content">
+                <h2 class="section-title" style="color: white;">Vamos Conversar?</h2>
+                <p class="contact-text">
+                    Vamos conversar sobre tecnologia, ideias e desafios de desenvolvimento!
+                </p>
+                <div class="contact-links">
+                    <a href="mailto:eliezeraafonso@outlook.com" class="contact-link">
+                        <i class="fas fa-envelope"></i> Email
+                    </a>
+                    <a href="https://www.linkedin.com/in/eliezer-afonso-developer" class="contact-link">
+                        <i class="fab fa-linkedin"></i> LinkedIn
+                    </a>
+                    <a href="https://github.com/EliezerAfonso01" class="contact-link">
+                        <i class="fab fa-github"></i> GitHub
+                    </a>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer>
-        <p>&copy; 2024 Eliézer Afonso. Criado com ❤️</p>
+    <footer class="footer">
+        <p>&copy; 2024 Eliézer Afonso. Desenvolvido com ❤️ e muito café ☕</p>
     </footer>
 </body>
+
 </html>
